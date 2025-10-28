@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+      # IMPORTANT: Assurer les droits d'écriture pour Laravel
+      - ./storage:/var/www/html/storage
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+    ports:
+      - "9000:9000" # S'il utilise php artisan serve
+    environment:
+      - APP_ENV=local
+      - DB_CONNECTION=mysql
+      # ... autres variables d'environnement
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: laravel_db
+    ports:
+      - "3306:3306"
